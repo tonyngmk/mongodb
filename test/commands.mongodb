@@ -1,0 +1,73 @@
+// Connection
+// mongosh "mongodb+srv://cluster0.x2kl1wp.mongodb.net/myFirstDatabase" --apiVersion 1 --username INSERT_USERNAME
+
+// Show all DB
+show dbs
+
+
+// Use / Create collection
+use blog
+db.createCollection("posts")
+
+// Create one instance
+db.posts.insertOne({
+	title: 'Post 1',
+	body: 'Body of post',
+	category: 'News',
+	likes: 1,
+	tags: ['news', 'events'],
+	date: Date()
+})
+
+// Create one or many instances
+db.posts.insertMany([
+{
+	title: 'Post 2',
+	body: 'Body of post',
+	category: 'News',
+	likes: 2,
+	tags: ['news', 'events'],
+	date: Date()
+},
+{
+	title: 'Post 3',
+	body: 'Body of post',
+	category: 'News',
+	likes: 3,
+	tags: ['news', 'events'],
+	date: Date()
+}
+])
+
+// Update one post
+db.posts.updateOne(
+	{title: "Post 1"},
+	{$set: {likes: 1}}
+)
+
+// Upsert (Update, if not insert)
+db.posts.updateOne(
+	{title: "Post 4"},
+	{$set: {
+		title: 'Post 4',
+		body: 'Body of post',
+		category: 'News'
+	}},
+	{upsert: true}
+)
+
+// Increment all likes by 1
+// (Post that does not have likes has 1)
+db.posts.updateMany({}, {
+	$inc: {likes: 1}
+})
+
+// Delete one instance
+db.posts.deleteOne({title: "Post 6"})
+
+// Delete multiple instances
+db.posts.insertOne({ title: 'Post 555', body: 'Body of post', category: 'News', likes: 555, tags: ['news', 'events'], date: Date() })
+db.posts.insertOne({ title: 'Post 555', body: 'Body of post', category: 'News', likes: 555, tags: ['news', 'events'], date: Date() })
+db.posts.insertOne({ title: 'Post 555', body: 'Body of post', category: 'News', likes: 555, tags: ['news', 'events'], date: Date() })
+
+db.posts.deleteMany({title: "Post 555"})
